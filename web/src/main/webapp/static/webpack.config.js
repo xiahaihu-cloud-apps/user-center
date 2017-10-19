@@ -1,10 +1,10 @@
-var path = require('path')
-var webpack = require('webpack')
-    // var CleanWebpackPlugin = require('clean-webpack-plugin')
+let path = require('path');
+let webpack = require('webpack');
+// var CleanWebpackPlugin = require('clean-webpack-plugin')
 
 module.exports = {
     entry: {
-        main: './src/app/main.js',
+        // main: './src/app/main.js',
         css: './src/css.js',
         login: './src/app/login.js',
     },
@@ -79,7 +79,7 @@ module.exports = {
 }
 
 if (process.env.NODE_ENV === 'production') {
-    module.exports.devtool = '#source-map'
+    module.exports.devtool = '#source-map';
         // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
