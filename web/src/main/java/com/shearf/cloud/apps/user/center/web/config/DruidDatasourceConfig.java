@@ -3,7 +3,6 @@ package com.shearf.cloud.apps.user.center.web.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
-import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,7 @@ import java.sql.SQLException;
 @Configuration
 @PropertySource("classpath:database.properties")
 @MapperScan(sqlSessionFactoryRef = "sqlSessionFactory", basePackages = "com.shearf.cloud.apps.user.center.dal.mapper", annotationClass = Repository.class)
-public class DruidDatasourceConfiguration implements EnvironmentAware {
+public class DruidDatasourceConfig implements EnvironmentAware {
 
     private Environment environment;
 
