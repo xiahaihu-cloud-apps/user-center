@@ -1,6 +1,7 @@
-let path = require('path');
-let webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
 // var CleanWebpackPlugin = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -10,7 +11,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: '/dist/',
+        publicPath: '/static/dist/',
         filename: '[name].build.js',
     },
     module: {
@@ -74,6 +75,13 @@ module.exports = {
             $: 'jquery',
             jquery: 'jquery'
         }),
+        // new HtmlWebpackPlugin({
+        //     // 省略其他插件配置项
+        //     projectPath: 'static',
+        //     template: {
+        //         login: './pages/login.html',
+        //     }
+        //   })
         // new CleanWebpackPlugin(['dist']),
     ]
 }

@@ -8,9 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.nio.charset.Charset;
@@ -33,10 +31,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
         messageConverter.setDefaultCharset(utf8Charset());
         messageConverter.setSupportedMediaTypes(Lists.newArrayList(
-                new MediaType("text/plain"),
-                new MediaType("text/html"),
-                new MediaType("text/json"),
-                new MediaType("application/json")
+                MediaType.TEXT_PLAIN,
+                MediaType.TEXT_HTML,
+                MediaType.APPLICATION_JSON_UTF8
         ));
 
         converters.add(stringHttpMessageConverter);
@@ -53,13 +50,19 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.viewResolver(internalResourceViewResolver());
     }
 
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }
+
     @Bean
     public InternalResourceViewResolver internalResourceViewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setContentType("text/html; charset=utf-8");
         viewResolver.setRequestContextAttribute("request");
-        viewResolver.setPrefix("/static/pages");
+        viewResolver.setPrefix("/static/pages/");
         viewResolver.setSuffix(".html");
+//        viewResolver.setOrder(0);
         return viewResolver;
     }
 }

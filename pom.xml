@@ -22,6 +22,7 @@
 
         <springframework.version>4.3.12.RELEASE</springframework.version>
         <servlet-api.version>3.1.0</servlet-api.version>
+        <jstl.version>1.2</jstl.version>
         <lombok.version>1.16.18</lombok.version>
         <guava.version>23.2-jre</guava.version>
         <junit.version>4.12</junit.version>
@@ -130,6 +131,12 @@
                 <artifactId>javax.servlet-api</artifactId>
                 <version>${servlet-api.version}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>${jstl.version}</version>
+                <!--<scope>provided</scope>-->
             </dependency>
 
             <!-- tools -->
