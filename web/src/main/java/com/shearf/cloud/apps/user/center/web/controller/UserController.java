@@ -2,6 +2,7 @@ package com.shearf.cloud.apps.user.center.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author xiahaihu2009@gmail.com
@@ -9,8 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class UserController {
 
-    @GetMapping("login")
-    public String login() {
-        return "login";
+    @GetMapping("")
+    @ResponseBody
+    public String index() {
+        return "index";
     }
 }

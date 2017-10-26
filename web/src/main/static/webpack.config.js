@@ -8,6 +8,7 @@ module.exports = {
         // main: './src/app/main.js',
         css: './src/css.js',
         login: './src/app/login.js',
+        register: './src/app/register.js'
     },
     output: {
         path: path.resolve(__dirname, './dist'),
@@ -73,7 +74,8 @@ module.exports = {
         new webpack.ProvidePlugin({
             jQuery: 'jquery',
             $: 'jquery',
-            jquery: 'jquery'
+            jquery: 'jquery',
+            ENV: path.resolve(__dirname, './env') + '/' + (process.env.NODE_ENV || "development")
         }),
         // new HtmlWebpackPlugin({
         //     // 省略其他插件配置项
@@ -88,7 +90,7 @@ module.exports = {
 
 if (process.env.NODE_ENV === 'production') {
     module.exports.devtool = '#source-map';
-        // http://vue-loader.vuejs.org/en/workflow/production.html
+    // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
             'process.env': {

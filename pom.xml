@@ -21,14 +21,19 @@
         <file.encoding>UTF-8</file.encoding>
 
         <springframework.version>4.3.12.RELEASE</springframework.version>
+
         <servlet-api.version>3.1.0</servlet-api.version>
         <jstl.version>1.2</jstl.version>
         <lombok.version>1.16.18</lombok.version>
         <guava.version>23.2-jre</guava.version>
         <junit.version>4.12</junit.version>
+        <patchca.version>0.0.1</patchca.version>
+        <commons-lang3.version>3.6</commons-lang3.version>
+        <commons-io.version>2.6</commons-io.version>
 
-        <!-- Jackson -->
+        <!-- json -->
         <jackson.version>2.9.2</jackson.version>
+        <fastjson.version>1.2.39</fastjson.version>
 
 
         <!-- database -->
@@ -49,6 +54,8 @@
         <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <spring-security.version>4.2.3.RELEASE</spring-security.version>
+        <validation-api.version>2.0.0.Final</validation-api.version>
+        <hibernate-validator.version>6.0.3.Final</hibernate-validator.version>
 
     </properties>
     <dependencyManagement>
@@ -124,6 +131,23 @@
                 <artifactId>spring-security-web</artifactId>
                 <version>${spring-security.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring-security.version}</version>
+            </dependency>
+
+            <!-- validator -->
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${validation-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
 
             <!-- servlet-api -->
             <dependency>
@@ -151,6 +175,17 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
             </dependency>
 
             <!-- mysql mybatis Druid -->
@@ -217,6 +252,18 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.bingoohuang</groupId>
+                <artifactId>patchca</artifactId>
+                <version>${patchca.version}</version>
             </dependency>
 
 

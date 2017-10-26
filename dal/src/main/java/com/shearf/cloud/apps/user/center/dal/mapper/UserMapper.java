@@ -9,4 +9,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserMapper extends IGenericMapper<UserModel, Integer> {
+
+    /**
+     * 根据email地址获得用户详情
+     *
+     * @param email
+     * @return
+     */
+    UserModel getByEmail(String email);
 }

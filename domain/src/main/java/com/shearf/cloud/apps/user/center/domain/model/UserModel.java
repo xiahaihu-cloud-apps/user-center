@@ -2,11 +2,13 @@ package com.shearf.cloud.apps.user.center.domain.model;
 
 import com.shearf.cloud.apps.commons.foundation.base.BaseModel;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
 /**
  * @author xiahaihu2009@gmail.com
  */
+@Data
 public class UserModel extends BaseModel {
 
     /**
