@@ -9,8 +9,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -64,7 +67,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.viewResolver(internalResourceViewResolver());
+        registry.viewResolver(freeMarkerViewResolver());
     }
 
     @Override
@@ -73,14 +76,22 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public InternalResourceViewResolver internalResourceViewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setContentType("text/html; charset=utf-8");
-        viewResolver.setRequestContextAttribute("request");
-        viewResolver.setPrefix("/static/pages/");
-        viewResolver.setCache(false);
-        viewResolver.setSuffix(".html");
-        return viewResolver;
+    public ViewResolver freeMarkerViewResolver() {
+        FreeMarkerViewResolver freeMarkerView = new FreeMarkerViewResolver();
+        freeMarkerView.setContentType("text/html; charset=utf-8");
+        freeMarkerView.setSuffix(".html");
+        freeMarkerView.setRequestContextAttribute("rc");
+        freeMarkerView.setCache(false);
+        freeMarkerView.setViewClass(FreeMarkerView.class);
+        return freeMarkerView;
+    }
+
+    @Bean
+    public FreeMarkerConfigurer freeMarkerConfigurer() {
+        FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
+        configurer.setDefaultEncoding("UTF-8");
+        configurer.setTemplateLoaderPath("/static/pages/");
+        return configurer;
     }
 
     @Override

@@ -57,6 +57,9 @@
         <validation-api.version>2.0.0.Final</validation-api.version>
         <hibernate-validator.version>6.0.3.Final</hibernate-validator.version>
 
+        <!-- view -->
+        <freemarker.version>2.3.23</freemarker.version>
+
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -119,6 +122,11 @@
                 <artifactId>spring-jdbc</artifactId>
                 <version>${springframework.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
 
             <!-- spring web security -->
             <dependency>
@@ -147,6 +155,13 @@
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate-validator.version}</version>
+            </dependency>
+
+            <!-- freemarker view -->
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
             </dependency>
 
             <!-- servlet-api -->

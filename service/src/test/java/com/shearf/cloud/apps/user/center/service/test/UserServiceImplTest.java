@@ -1,6 +1,5 @@
 package com.shearf.cloud.apps.user.center.service.test;
 
-import com.shearf.cloud.apps.user.center.domain.bean.UserDetailsBean;
 import com.shearf.cloud.apps.user.center.service.UserService;
 import com.shearf.cloud.apps.user.center.service.test.config.AppContextConfig;
 import com.shearf.cloud.apps.user.center.service.test.config.DruidDatasourceConfig;
@@ -27,10 +26,6 @@ public class UserServiceImplTest {
     @Test
     @Rollback
     public void createUser() throws Exception {
-        UserDetailsBean userDetailsBean = new UserDetailsBean();
-        userDetailsBean.setPassword("shearf");
-        userDetailsBean.setUsername("xiahaihu@126.com");
-        userService.createUser(userDetailsBean);
     }
 
     @Test

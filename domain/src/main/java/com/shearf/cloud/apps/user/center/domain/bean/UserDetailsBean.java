@@ -14,23 +14,16 @@ import java.util.Collection;
 @Data
 public class UserDetailsBean implements UserDetails {
 
-    private String username;
-
-    private String password;
-
-    private boolean enabled;
-
-    private String salt;
+    private final UserModel userModel;
 
     private static final long serialVersionUID = -4526272797216934966L;
 
+    public UserDetailsBean(UserModel userModel) {
+        this.userModel = userModel;
+    }
+
     public static UserDetailsBean generateByUserModel(UserModel userModel) {
-        UserDetailsBean userDetailsBean = new UserDetailsBean();
-        userDetailsBean.setUsername(userModel.getEmail());
-        userDetailsBean.setSalt(userModel.getSalt());
-        userDetailsBean.setPassword(userModel.getPassword());
-        userDetailsBean.setEnabled(UserModel.Status.ENABLED.getValue() == userModel.getStatus());
-        return userDetailsBean;
+        return new UserDetailsBean(userModel);
     }
 
     @Override
@@ -39,8 +32,21 @@ public class UserDetailsBean implements UserDetails {
     }
 
     @Override
+    public String getPassword() {
+        return userModel.getPassword();
+    }
+
+    public String getSalt() {
+        return userModel.getSalt();
+    }
+
+    public UserModel getUserModel() {
+        return userModel;
+    }
+
+    @Override
     public String getUsername() {
-        return username;
+        return userModel.getEmail();
     }
 
     @Override
@@ -60,6 +66,6 @@ public class UserDetailsBean implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return userModel.getStatus() == UserModel.Status.ENABLED.getValue();
     }
 }

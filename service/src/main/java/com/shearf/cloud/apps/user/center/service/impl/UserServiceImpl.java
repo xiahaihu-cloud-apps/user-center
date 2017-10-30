@@ -1,6 +1,8 @@
 package com.shearf.cloud.apps.user.center.service.impl;
 
 import com.shearf.cloud.apps.commons.foundation.mybatis.AbstractGenericService;
+import com.shearf.cloud.apps.user.center.common.error.UserError;
+import com.shearf.cloud.apps.user.center.common.exception.ServiceException;
 import com.shearf.cloud.apps.user.center.dal.mapper.UserMapper;
 import com.shearf.cloud.apps.user.center.domain.bean.UserDetailsBean;
 import com.shearf.cloud.apps.user.center.domain.model.UserModel;
@@ -34,14 +36,12 @@ public class UserServiceImpl extends AbstractGenericService<UserModel, Integer, 
     @Override
     public void createUser(UserDetails userDetails) {
         if (userExists(userDetails.getUsername())) {
-            return;
+            throw new ServiceException(UserError.REGISTER_USER_FAIL_EMAIL_ALREAY_EXISTS);
         }
 
         final String salt = UUID.randomUUID().toString().trim().replaceAll("-", "");
-        UserModel userModel = new UserModel();
-        userModel.setEmail(userDetails.getUsername());
+        UserModel userModel = ((UserDetailsBean) userDetails).getUserModel();
         userModel.setPassword(passwordEncoder.encodePassword(userDetails.getPassword(), salt));
-        userModel.setName("");
         userModel.setSalt(salt);
         userModel.setStatus(UserModel.Status.ENABLED.getValue());
         userModel.setCreateTime(new Date());
