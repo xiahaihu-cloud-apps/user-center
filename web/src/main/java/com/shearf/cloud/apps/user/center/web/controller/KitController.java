@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -33,9 +34,12 @@ public class KitController {
     @Resource
     private ConfigurableCaptchaService captchaService;
 
+    @Resource
+    private RestTemplate restTemplate;
+
     @RequestMapping("captcha")
     @ResponseBody
-    public String index(HttpServletRequest request) {
+    public String captcha(HttpServletRequest request) {
         final String captchaBasePath = "/public/captcha";
 
         HttpSession session = request.getSession();
@@ -60,6 +64,19 @@ public class KitController {
             }
         }
         return captchaPath;
+    }
+
+    /**
+     * 下发简单的验证码
+     *
+     * @param request http请求
+     * @return 验证码图片地址
+     */
+    @GetMapping("captcha/simple")
+    @ResponseBody
+    public String simpleCaptcha(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        return "";
     }
 
     @GetMapping("csrf")
