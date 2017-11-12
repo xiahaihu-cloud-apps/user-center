@@ -10,6 +10,7 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -23,6 +24,7 @@ import java.awt.*;
  */
 @Configuration
 @ComponentScan(value = "com.shearf.cloud.apps.user.center")
+@PropertySource("classpath:application.properties")
 public class AppContextConfig implements EnvironmentAware {
 
     private Environment environment;
