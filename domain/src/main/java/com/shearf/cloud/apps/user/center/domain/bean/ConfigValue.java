@@ -9,6 +9,19 @@ import lombok.Data;
 @Data
 public class ConfigValue {
 
+    /**
+     * 简单验证码服务api
+     */
     private String simpleCaptchaApi;
+
+    /**
+     * 简单验证码服务需要的AppKey
+     */
+    private String simpleCaptchaAppKey;
+
+    /**
+     * 简单验证码服务需要的AppSecret
+     */
+    private String simpleCaptchaAppSecret;
 
 }

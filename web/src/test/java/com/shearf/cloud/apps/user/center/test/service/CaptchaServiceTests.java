@@ -1,8 +1,8 @@
-package com.shearf.cloud.apps.user.center.web.bean;
+package com.shearf.cloud.apps.user.center.test.service;
 
-import com.shearf.cloud.apps.user.center.domain.bean.ConfigValue;
+import com.shearf.cloud.apps.user.center.domain.entity.CaptchaAndImage;
+import com.shearf.cloud.apps.user.center.service.CaptchaService;
 import com.shearf.cloud.apps.user.center.web.config.AppContextConfig;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -13,18 +13,19 @@ import javax.annotation.Resource;
 
 /**
  * @author xiahaihu2009@gmail.com
- * @date 2017/11/11
+ * @date 2017/12/17
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppContextConfig.class})
 @WebAppConfiguration
-public class ConfigValueTest {
+public class CaptchaServiceTests {
 
     @Resource
-    private ConfigValue configValue;
+    private CaptchaService simpleCaptchaService;
 
     @Test
-    public void simpleCaptchaApiTest() {
-        Assert.assertTrue(configValue.getSimpleCaptchaApi().equals("http://captcha.shearf.com/captcha/v1"));
+    public void simpleCaptchaServiceTest() {
+        CaptchaAndImage captchaAndImage = simpleCaptchaService.getCaptchaAndImage();
+
     }
 }

@@ -1,5 +1,6 @@
 package com.shearf.cloud.apps.user.center.web.controller;
 
+import com.shearf.cloud.apps.user.center.common.constants.SessionKey;
 import com.shearf.cloud.apps.user.center.common.error.UserError;
 import com.shearf.cloud.apps.user.center.common.exception.ServiceException;
 import com.shearf.cloud.apps.user.center.domain.bean.UserDetailsBean;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
@@ -30,11 +33,18 @@ public class RegisterController {
 
     @PostMapping("/register")
     @Transactional
-    public String doRegister(@Valid RegisterParam param) {
+    public String doRegister(@Valid RegisterParam param, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        String captcha = (String) session.getAttribute(SessionKey.CAPTCHA);
+        if (captcha == null || !captcha.equals(param.getCaptcha())) {
+            throw new ServiceException(UserError.REGISTER_USER_FAIL_CAPTCHA_NOT_MATCH);
+        }
 
         if (!param.getPassword().equals(param.getRetypePassword())) {
             throw new ServiceException(UserError.REGISTER_PASSWORD_NOT_MATCH);
         }
+
 
         UserModel userModel = new UserModel();
         userModel.setEmail(param.getEmail());

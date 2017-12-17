@@ -30,21 +30,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-
-//        MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
-//        messageConverter.setDefaultCharset(utf8Charset());
-//        messageConverter.setSupportedMediaTypes(Lists.newArrayList(
-//                MediaType.TEXT_PLAIN,
-//                MediaType.TEXT_HTML,
-//                MediaType.APPLICATION_JSON_UTF8
-//        ));
-
         List<MediaType> mediaTypes = Lists.newArrayList(
                 MediaType.TEXT_PLAIN,
                 MediaType.TEXT_HTML,
                 MediaType.APPLICATION_JSON_UTF8
         );
-//
         FastJsonHttpMessageConverter httpMessageConverter = new FastJsonHttpMessageConverter();
         httpMessageConverter.setDefaultCharset(utf8Charset());
         httpMessageConverter.setFastJsonConfig(fastJsonConfig());

@@ -25,4 +25,7 @@ public class RegisterParam implements IParam {
 
     @NotBlank
     private String retypePassword;
+
+    @NotBlank
+    private String captcha;
 }

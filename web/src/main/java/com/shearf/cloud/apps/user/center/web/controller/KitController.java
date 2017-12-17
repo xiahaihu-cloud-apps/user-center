@@ -3,6 +3,8 @@ package com.shearf.cloud.apps.user.center.web.controller;
 import com.github.bingoohuang.patchca.custom.ConfigurableCaptchaService;
 import com.github.bingoohuang.patchca.utils.encoder.EncoderHelper;
 import com.shearf.cloud.apps.user.center.common.constants.SessionKey;
+import com.shearf.cloud.apps.user.center.domain.entity.CaptchaAndImage;
+import com.shearf.cloud.apps.user.center.service.CaptchaService;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -35,7 +37,7 @@ public class KitController {
     private ConfigurableCaptchaService captchaService;
 
     @Resource
-    private RestTemplate restTemplate;
+    private CaptchaService simpleCaptchaService;
 
     @RequestMapping("captcha")
     @ResponseBody
@@ -76,7 +78,9 @@ public class KitController {
     @ResponseBody
     public String simpleCaptcha(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        return "";
+        CaptchaAndImage captchaAndImage = simpleCaptchaService.getCaptchaAndImage();
+        session.setAttribute(SessionKey.CAPTCHA, captchaAndImage.getCaptcha());
+        return captchaAndImage.getImgUrl();
     }
 
     @GetMapping("csrf")

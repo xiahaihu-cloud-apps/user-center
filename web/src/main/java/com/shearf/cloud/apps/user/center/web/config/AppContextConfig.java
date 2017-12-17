@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -27,7 +28,7 @@ import java.awt.*;
 @PropertySource("classpath:application.properties")
 public class AppContextConfig implements EnvironmentAware {
 
-    private Environment environment;
+    private Environment env;
 
     @Bean
     public ConfigurableCaptchaService captchaService() {
@@ -45,7 +46,12 @@ public class AppContextConfig implements EnvironmentAware {
 
     @Bean
     public RestTemplate restTemplate() {
-        RestTemplate restTemplate = new RestTemplate();
+        int timeout = 5000;
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        factory.setConnectionRequestTimeout(timeout);
+        factory.setReadTimeout(timeout);
+
+        RestTemplate restTemplate = new RestTemplate(factory);
         restTemplate.setMessageConverters(Lists.newArrayList(
                 new FormHttpMessageConverter(),
                 new StringHttpMessageConverter(),
@@ -57,12 +63,14 @@ public class AppContextConfig implements EnvironmentAware {
     @Bean
     public ConfigValue configValue() {
         ConfigValue configValue = new ConfigValue();
-        configValue.setSimpleCaptchaApi(environment.getProperty("app.simple.captcha.api"));
+        configValue.setSimpleCaptchaApi(env.getProperty("app.simple.captcha.api"));
+        configValue.setSimpleCaptchaAppKey(env.getProperty("app.simple.captcha.api.appKey"));
+        configValue.setSimpleCaptchaAppSecret(env.getProperty("app.simple.captcha.api.appSecret"));
         return configValue;
     }
 
     @Override
     public void setEnvironment(Environment environment) {
-        this.environment = environment;
+        env = environment;
     }
 }
