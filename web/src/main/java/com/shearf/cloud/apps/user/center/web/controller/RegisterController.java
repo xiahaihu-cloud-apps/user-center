@@ -1,5 +1,6 @@
 package com.shearf.cloud.apps.user.center.web.controller;
 
+import com.shearf.cloud.apps.commons.foundation.response.Response;
 import com.shearf.cloud.apps.user.center.common.constants.SessionKey;
 import com.shearf.cloud.apps.user.center.common.error.UserError;
 import com.shearf.cloud.apps.user.center.common.exception.ServiceException;
@@ -7,6 +8,7 @@ import com.shearf.cloud.apps.user.center.domain.bean.UserDetailsBean;
 import com.shearf.cloud.apps.user.center.domain.model.UserModel;
 import com.shearf.cloud.apps.user.center.domain.param.RegisterParam;
 import com.shearf.cloud.apps.user.center.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,9 +34,11 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public String doRegister(@Valid RegisterParam param, HttpServletRequest request) {
 
+        String redirect = request.getParameter("redirect");
+        redirect = StringUtils.isNoneBlank(redirect) ? redirect : "login";
         HttpSession session = request.getSession();
         String captcha = (String) session.getAttribute(SessionKey.CAPTCHA);
         if (captcha == null || !captcha.equals(param.getCaptcha())) {
@@ -52,6 +56,6 @@ public class RegisterController {
         userModel.setPassword(param.getPassword());
         userService.createUser(UserDetailsBean.generateByUserModel(userModel));
 
-        return "redirect:/login";
+        return redirect;
     }
 }

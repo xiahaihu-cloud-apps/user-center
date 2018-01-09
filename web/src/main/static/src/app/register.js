@@ -25,7 +25,7 @@ const registerForm = new Vue({
     },
     methods: {
         reloadCaptchaImage: function() {
-            let _this = this;
+            const _this = this;
             axios.get(APIS.CAPTCHA).then(function(response) {
                 _this.$data.captchaImage = response.data;
             })

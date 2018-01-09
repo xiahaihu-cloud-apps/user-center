@@ -9,9 +9,12 @@ import com.shearf.cloud.apps.user.center.service.CaptchaService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -25,6 +28,8 @@ import java.util.Date;
 @Service("simpleCaptchaService")
 public class SimpleCaptchaServiceImpl implements CaptchaService {
 
+    private static final Logger logger = LoggerFactory.getLogger(SimpleCaptchaServiceImpl.class);
+
     @Resource
     private ConfigValue configValue;
 
@@ -33,6 +38,7 @@ public class SimpleCaptchaServiceImpl implements CaptchaService {
 
     @Override
     public CaptchaAndImage getCaptchaAndImage() {
+
         String simpleCaptchaApi = configValue.getSimpleCaptchaApi();
 
         HttpHeaders headers = new HttpHeaders();
@@ -50,9 +56,20 @@ public class SimpleCaptchaServiceImpl implements CaptchaService {
 
         ParameterizedTypeReference<Response<CaptchaAndImage>> typeReference = new ParameterizedTypeReference<Response<CaptchaAndImage>>() {
         };
-        ResponseEntity<Response<CaptchaAndImage>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, typeReference);
-        Response<CaptchaAndImage> captchaAndImageResponse = responseEntity.getBody();
-        return captchaAndImageResponse.getData();
+        try {
+            ResponseEntity<Response<CaptchaAndImage>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, typeReference);
+            Response<CaptchaAndImage> captchaAndImageResponse = responseEntity.getBody();
+            if (captchaAndImageResponse.getCode() == Response.Status.SUCCESS.getCode()) {
+                CaptchaAndImage captchaAndImage = captchaAndImageResponse.getData();
+                logger.info("调用验证码服务成功，获得验证码:{}, 验证码图片:{}", captchaAndImage.getCaptcha(), captchaAndImage.getImgUrl());
+                return captchaAndImageResponse.getData();
+            } else {
+                logger.error("调用验证码服务失败，返回错误码:{}, 错误信息:{}", captchaAndImageResponse.getCode(), captchaAndImageResponse.getMessage());
+            }
+        } catch (RestClientException e) {
+            logger.error("调用验证码服务失败，服务地址:{}", url);
+        }
+        return null;
     }
 
     private String createSimpleCaptchaSign(String appKey, String time, String appSecret) {
