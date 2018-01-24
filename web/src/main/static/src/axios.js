@@ -5,5 +5,6 @@ export default Axios.create({
     headers: {
         'Content-Type': 'application/json',
         'x-requested-with': 'XMLHttpRequest'
-    }
+    },
+    withCredentials: true
 })

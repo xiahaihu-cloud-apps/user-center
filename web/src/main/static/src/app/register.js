@@ -9,15 +9,22 @@ Vue.use(VeeValidate)
 const registerForm = new Vue({
     el: "#registerForm",
     data: {
-        csrfName: "_csrf",
-        csrfToken: "",
+        form: {
+            name: "",
+            email: "",
+            captcha: "",
+            password: "",
+            retypePassword: ""
+        },
+        csrf: {
+            headerName: "",
+            token: ""
+        },
         captchaImage: "",
-        password: "",
-        retypePassword: ""
     },
     computed: {
         retypePasswordError: function() {
-            return this.errors.has("retypePassword") || this.password != this.retypePassword;
+            return this.errors.has("retypePassword") || this.form.password != this.form.retypePassword;
         }
     },
     mounted: function() {
@@ -33,20 +40,22 @@ const registerForm = new Vue({
         submitForm: function(event) {
             const _this = this;
             this.$validator.validateAll().then(function(result) {
-                if (!result || _this.password != _this.retypePassword) {
-
-                    axios.post(APIS.REGISTER, _this.$data).then(function(result) {
-
+                if (result && _this.form.password == _this.form.retypePassword) {
+                    axios.post(APIS.REGISTER, JSON.stringify(_this.$data.form), {
+                        headers: {
+                            "X-CSRF-TOKEN": _this.$data.csrf.token
+                        }
+                    }).then(function(result) {
+                        console.debug(result);
                     });
-
-                    event.preventDefault();
                 }
+                event.preventDefault();
             })
         }
     }
 });
 
 axios.get(APIS.CSRF).then(function(response) {
-    loginForm.$data.csrfName = response.data.parameterName;
-    loginForm.$data.csrfToken = response.data.token;
+    registerForm.$data.csrf.headerName = response.data.headerName;
+    registerForm.$data.csrf.token = response.data.token;
 });

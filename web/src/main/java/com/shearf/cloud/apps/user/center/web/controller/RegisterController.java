@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +37,8 @@ public class RegisterController {
 
     @PostMapping("/register")
     @Transactional(rollbackFor = Exception.class)
-    public String doRegister(@Valid RegisterParam param, HttpServletRequest request) {
+    @ResponseBody
+    public Response<String> doRegister(@RequestBody @Valid RegisterParam param, HttpServletRequest request) {
 
         String redirect = request.getParameter("redirect");
         redirect = StringUtils.isNoneBlank(redirect) ? redirect : "login";
@@ -49,13 +52,12 @@ public class RegisterController {
             throw new ServiceException(UserError.REGISTER_PASSWORD_NOT_MATCH);
         }
 
-
         UserModel userModel = new UserModel();
         userModel.setEmail(param.getEmail());
         userModel.setName(param.getName());
         userModel.setPassword(param.getPassword());
         userService.createUser(UserDetailsBean.generateByUserModel(userModel));
 
-        return redirect;
+        return Response.success(redirect);
     }
 }

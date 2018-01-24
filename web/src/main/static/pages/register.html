@@ -29,24 +29,23 @@
             <p class="login-box-msg ">注册成为用户</p>
 
             <form action="register" method="post" id="registerForm">
-                <input type="hidden" :name="csrfName" v-model="csrfToken">
                 <div class="form-group has-feedback" :class="{'has-error': errors.has('name')}">
-                    <input v-validate="{required:true, max:20}" type="text" class="form-control " placeholder="用户名" name="name">
+                    <input v-validate="{required:true, max:20}" type="text" class="form-control " placeholder="用户名" name="name" v-model="form.name">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     <span class="help-block" v-show="errors.has('name')">用户名不能为空，长度不超过20个字</span>
                 </div>
                 <div class="form-group has-feedback" :class="{'has-error':errors.has('email')}">
-                    <input v-validate="{required:true, email:true}" type="email" class="form-control " placeholder="Email" name="email">
+                    <input v-validate="{required:true, email:true}" type="email" class="form-control " placeholder="Email" name="email" v-model="form.email">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     <span class="help-block" v-show="errors.has('email')">email格式错误或为空</span>
                 </div>
                 <div class="form-group has-feedback " :class="{'has-error': errors.has('password')}">
-                    <input v-validate="{required:true, alpha_dash:true, min:6}" type="password" class="form-control " placeholder="密码" name="password" v-model="password">
+                    <input v-validate="{required:true, alpha_dash:true, min:6}" type="password" class="form-control " placeholder="密码" name="password" v-model="form.password">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     <span class="help-block" v-show="errors.has('password')">密码必填，英文数字或者下划线组合，且长度不小于6位</span>
                 </div>
                 <div class="form-group has-feedback " :class="{'has-error': retypePasswordError}">
-                    <input v-validate="{required:true}" type="password" class="form-control " placeholder="重复密码" name="retypePassword" v-model="retypePassword">
+                    <input v-validate="{required:true}" type="password" class="form-control " placeholder="重复密码" name="retypePassword" v-model="form.retypePassword">
                     <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
                     <span class="help-block" v-show="retypePasswordError">重复密码必须和密码一致</span>
                 </div>
@@ -58,7 +57,7 @@
                     </div>
                     <div class="col-xs-5">
                         <div class="form-group has-feedback" :class="{'has-error': errors.has('captcha')}">
-                            <input v-validate="{required:true, min: 6, max: 6}" type="text" class="form-control" name="captcha" placeholder="验证码">
+                            <input v-validate="{required:true, min: 6, max: 6}" type="text" class="form-control" name="captcha" placeholder="验证码" v-model="form.captcha">
                             <span class="help-block" v-show="errors.has('captcha')">请输入6位验证码</span>
                         </div>
                     </div>
