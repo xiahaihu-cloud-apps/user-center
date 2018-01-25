@@ -78,8 +78,11 @@ public class KitController {
     public String simpleCaptcha(HttpServletRequest request) {
         HttpSession session = request.getSession();
         CaptchaAndImage captchaAndImage = simpleCaptchaService.getCaptchaAndImage();
-        session.setAttribute(SessionKey.CAPTCHA, captchaAndImage.getCaptcha());
-        return captchaAndImage.getImgUrl();
+        if (captchaAndImage != null) {
+            session.setAttribute(SessionKey.CAPTCHA, captchaAndImage.getCaptcha());
+            return captchaAndImage.getImgUrl();
+        }
+        return null;
     }
 
     @GetMapping("csrf")

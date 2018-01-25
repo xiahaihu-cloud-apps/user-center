@@ -5,18 +5,22 @@ import com.shearf.cloud.apps.commons.foundation.response.Response;
 import com.shearf.cloud.apps.user.center.common.constants.Constant;
 import com.shearf.cloud.apps.user.center.common.error.GlobalError;
 import com.shearf.cloud.apps.user.center.common.exception.ServiceException;
+import com.sun.xml.internal.xsom.impl.Ref;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 
 /**
  * @author xiahaihu2009@gmai.com
@@ -54,8 +58,10 @@ public class ExceptionHandlerAdvice {
         return StringUtils.isNotBlank(xRequestWith) && Constant.X_REQUEST_HEADER_VALUE.equals(xRequestWith);
     }
 
+    @ResponseBody
     private void responseJson(Response response, HttpServletResponse servletResponse) {
         try {
+            servletResponse.setContentType(String.valueOf(ContentType.DEFAULT_TEXT.withCharset(Charset.forName("UTF-8"))));
             PrintWriter writer = servletResponse.getWriter();
             writer.write(JSON.toJSONString(response));
             writer.flush();

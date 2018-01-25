@@ -59,12 +59,16 @@ public class SimpleCaptchaServiceImpl implements CaptchaService {
         try {
             ResponseEntity<Response<CaptchaAndImage>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, typeReference);
             Response<CaptchaAndImage> captchaAndImageResponse = responseEntity.getBody();
-            if (captchaAndImageResponse.getCode() == Response.Status.SUCCESS.getCode()) {
-                CaptchaAndImage captchaAndImage = captchaAndImageResponse.getData();
-                logger.info("调用验证码服务成功，获得验证码:{}, 验证码图片:{}", captchaAndImage.getCaptcha(), captchaAndImage.getImgUrl());
-                return captchaAndImageResponse.getData();
+            if (captchaAndImageResponse == null) {
+                logger.error("调用验证码服务失败，返回内容为空");
             } else {
-                logger.error("调用验证码服务失败，返回错误码:{}, 错误信息:{}", captchaAndImageResponse.getCode(), captchaAndImageResponse.getMessage());
+                if (captchaAndImageResponse.getCode() == Response.Status.SUCCESS.getCode()) {
+                    CaptchaAndImage captchaAndImage = captchaAndImageResponse.getData();
+                    logger.info("调用验证码服务成功，获得验证码:{}, 验证码图片:{}", captchaAndImage.getCaptcha(), captchaAndImage.getImgUrl());
+                    return captchaAndImage;
+                } else {
+                    logger.error("调用验证码服务失败，返回错误码:{}, 错误信息:{}", captchaAndImageResponse.getCode(), captchaAndImageResponse.getMessage());
+                }
             }
         } catch (RestClientException e) {
             logger.error("调用验证码服务失败，服务地址:{}", url);
