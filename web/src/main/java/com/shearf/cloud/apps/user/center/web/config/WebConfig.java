@@ -4,6 +4,8 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.google.common.collect.Lists;
+import com.shearf.cloud.apps.user.center.web.interceptor.CsrfCleanInterceptor;
+import com.shearf.cloud.apps.user.center.web.interceptor.CaptchaInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -63,6 +65,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new CaptchaInterceptor()).addPathPatterns("/register");
+        registry.addInterceptor(new CsrfCleanInterceptor()).addPathPatterns("/**");
     }
 
     @Bean

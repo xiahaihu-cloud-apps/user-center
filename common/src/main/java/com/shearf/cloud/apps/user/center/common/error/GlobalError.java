@@ -13,6 +13,8 @@ public enum GlobalError implements Error {
      */
     VALIDATE_ERROR(-10001, "数据验证错误"),
 
+    INVALID_CSRF(-10002, "invalid csrf"),
+
     ;
 
     private int code;

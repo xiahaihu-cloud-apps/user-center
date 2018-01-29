@@ -1,6 +1,7 @@
 package com.shearf.cloud.apps.user.center.web.config;
 
 import com.shearf.cloud.apps.user.center.service.UserService;
+import com.shearf.cloud.apps.user.center.web.advice.CustomAccessDeniedHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.annotation.Resource;
@@ -68,6 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/csrf").permitAll()
                 .antMatchers("/captcha/**").permitAll()
                 .antMatchers("/public/**").permitAll()
+                .antMatchers("/favicon.ico").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -75,12 +78,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .passwordParameter("password").usernameParameter("username")
                     .defaultSuccessUrl("/login/success")
                     .failureUrl("/login/fail")
-                .and().csrf()
+                .and().csrf().csrfTokenRepository(new HttpSessionCsrfTokenRepository())
                 .and().logout()
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login.html")
-                .invalidateHttpSession(true);
+                .invalidateHttpSession(true)
+                .and().exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+                .and().cors().disable()
         ;
     }
 

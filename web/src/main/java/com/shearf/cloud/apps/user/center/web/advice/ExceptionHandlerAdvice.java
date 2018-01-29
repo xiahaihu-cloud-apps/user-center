@@ -5,15 +5,16 @@ import com.shearf.cloud.apps.commons.foundation.response.Response;
 import com.shearf.cloud.apps.user.center.common.constants.Constant;
 import com.shearf.cloud.apps.user.center.common.error.GlobalError;
 import com.shearf.cloud.apps.user.center.common.exception.ServiceException;
-import com.sun.xml.internal.xsom.impl.Ref;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;

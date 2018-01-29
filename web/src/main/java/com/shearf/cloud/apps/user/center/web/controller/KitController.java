@@ -87,7 +87,7 @@ public class KitController {
 
     @GetMapping("csrf")
     @ResponseBody
-    public CsrfToken csrfToken(CsrfToken csrfToken) {
+    public CsrfToken csrfToken(CsrfToken csrfToken, HttpServletRequest request) {
         return csrfToken;
     }
 

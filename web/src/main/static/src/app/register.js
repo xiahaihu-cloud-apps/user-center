@@ -47,6 +47,8 @@ const registerForm = new Vue({
                         }
                     }).then(function(result) {
                         console.debug(result);
+                    }).catch(function(error) {
+                        console.debug(error);
                     });
                 }
                 event.preventDefault();
