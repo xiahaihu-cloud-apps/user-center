@@ -2,6 +2,7 @@ import axios from '../axios'
 // import axios from 'axios'
 import Vue from 'vue'
 import APIS from '../base/apis'
+import CONSTANTS from '../base/constants'
 
 import VeeValidate from 'vee-validate'
 Vue.use(VeeValidate)
@@ -46,7 +47,9 @@ const registerForm = new Vue({
                             "X-CSRF-TOKEN": _this.$data.csrf.token
                         }
                     }).then(function(result) {
-                        console.debug(result);
+                        if (result.code == CONSTANTS.ResponseCode.SUCCESS) {
+                            
+                        }
                     }).catch(function(error) {
                         console.debug(error);
                     });

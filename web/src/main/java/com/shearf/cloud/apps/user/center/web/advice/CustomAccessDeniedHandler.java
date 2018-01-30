@@ -34,7 +34,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         return StringUtils.isNotBlank(xRequestWith) && Constant.X_REQUEST_HEADER_VALUE.equals(xRequestWith);
     }
 
-    @ResponseBody
     private void responseJson(Response response, HttpServletResponse servletResponse) {
         try {
             servletResponse.setContentType(String.valueOf(ContentType.DEFAULT_TEXT.withCharset(Charset.forName("UTF-8"))));
@@ -43,7 +42,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
-//            LOGGER.error("无法返回json请求");
         }
 
     }

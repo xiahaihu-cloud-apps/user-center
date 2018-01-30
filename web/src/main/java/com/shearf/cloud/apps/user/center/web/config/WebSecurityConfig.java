@@ -85,7 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login.html")
                 .invalidateHttpSession(true)
                 .and().exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
-                .and().cors().disable()
+                .and().cors()
         ;
     }
 
