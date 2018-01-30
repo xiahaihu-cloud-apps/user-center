@@ -1,7 +1,7 @@
 package com.shearf.cloud.apps.user.center.common.exception;
 
-import com.shearf.cloud.apps.commons.foundation.response.Response;
-import com.shearf.cloud.apps.user.center.common.error.Error;
+import com.shearf.cloud.apps.commons.foundation.error.BaseError;
+import com.shearf.cloud.apps.commons.foundation.error.IError;
 
 /**
  * @author xiahaihu2009@gmai.com
@@ -16,7 +16,7 @@ public class ServiceException extends RuntimeException {
     private SerializableObject object;
 
     public ServiceException() {
-        this(Response.Status.FAILURE.getCode(), Response.Status.FAILURE.getMessage(), (SerializableObject) null);
+        this(BaseError.FAIL.getCode(), BaseError.FAIL.getMessage(), (SerializableObject) null);
     }
 
     public ServiceException(int code, String messages, SerializableObject object) {
@@ -26,15 +26,15 @@ public class ServiceException extends RuntimeException {
         this.object = object;
     }
 
-    public ServiceException(Error error) {
+    public ServiceException(IError error) {
         this(error.getCode(), error.getMessage(), (SerializableObject) null);
     }
 
     public ServiceException(String message) {
-        this(Response.Status.FAILURE.getCode(), message, (SerializableObject) null);
+        this(BaseError.FAIL.getCode(), message, (SerializableObject) null);
     }
 
-    public ServiceException(Error error, SerializableObject object) {
+    public ServiceException(IError error, SerializableObject object) {
         this(error.getCode(), error.getMessage(), object);
     }
 

@@ -30,6 +30,7 @@ const registerForm = new Vue({
     },
     mounted: function() {
         this.reloadCaptchaImage();
+        this.getToken();
     },
     methods: {
         reloadCaptchaImage: function() {
@@ -48,6 +49,8 @@ const registerForm = new Vue({
                         }
                     }).then(function(result) {
                         if (result.code == CONSTANTS.ResponseCode.SUCCESS) {
+
+                        } else {
                             
                         }
                     }).catch(function(error) {
@@ -56,11 +59,12 @@ const registerForm = new Vue({
                 }
                 event.preventDefault();
             })
+        },
+        getToken: function() {
+            axios.get(APIS.CSRF).then(function(response) {
+                registerForm.$data.csrf.headerName = response.data.headerName;
+                registerForm.$data.csrf.token = response.data.token;
+            });
         }
     }
-});
-
-axios.get(APIS.CSRF).then(function(response) {
-    registerForm.$data.csrf.headerName = response.data.headerName;
-    registerForm.$data.csrf.token = response.data.token;
 });

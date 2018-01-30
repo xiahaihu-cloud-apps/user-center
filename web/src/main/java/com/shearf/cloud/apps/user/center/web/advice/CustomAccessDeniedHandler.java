@@ -3,10 +3,12 @@ package com.shearf.cloud.apps.user.center.web.advice;
 import com.alibaba.fastjson.JSON;
 import com.shearf.cloud.apps.commons.foundation.response.Response;
 import com.shearf.cloud.apps.user.center.common.constants.Constant;
+import com.shearf.cloud.apps.user.center.common.error.GlobalError;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.ContentType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.csrf.CsrfException;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletException;
@@ -23,9 +25,11 @@ import java.nio.charset.Charset;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
-        if (isAjax(request)) {
-            Response res = Response.fail("403");
-            responseJson(res, response);
+        if (e instanceof CsrfException) {
+            if (isAjax(request)) {
+                Response res = Response.result(GlobalError.INVALID_CSRF.getCode(), GlobalError.INVALID_CSRF.getMessage(), null);
+                responseJson(res, response);
+            }
         }
     }
 

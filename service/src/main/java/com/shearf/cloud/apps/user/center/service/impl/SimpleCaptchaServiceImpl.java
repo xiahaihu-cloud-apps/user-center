@@ -1,6 +1,7 @@
 package com.shearf.cloud.apps.user.center.service.impl;
 
 import com.google.common.collect.Lists;
+import com.shearf.cloud.apps.commons.foundation.error.BaseError;
 import com.shearf.cloud.apps.commons.foundation.response.Response;
 import com.shearf.cloud.apps.commons.foundation.util.DateUtil;
 import com.shearf.cloud.apps.user.center.domain.bean.ConfigValue;
@@ -62,7 +63,7 @@ public class SimpleCaptchaServiceImpl implements CaptchaService {
             if (captchaAndImageResponse == null) {
                 logger.error("调用验证码服务失败，返回内容为空");
             } else {
-                if (captchaAndImageResponse.getCode() == Response.Status.SUCCESS.getCode()) {
+                if (captchaAndImageResponse.getCode() == BaseError.SUCCESS.getCode()) {
                     CaptchaAndImage captchaAndImage = captchaAndImageResponse.getData();
                     logger.info("调用验证码服务成功，获得验证码:{}, 验证码图片:{}", captchaAndImage.getCaptcha(), captchaAndImage.getImgUrl());
                     return captchaAndImage;

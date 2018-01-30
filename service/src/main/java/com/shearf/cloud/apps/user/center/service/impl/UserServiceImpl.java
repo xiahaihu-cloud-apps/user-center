@@ -36,7 +36,7 @@ public class UserServiceImpl extends AbstractGenericService<UserModel, Integer, 
     @Override
     public void createUser(UserDetails userDetails) {
         if (userExists(userDetails.getUsername())) {
-            throw new ServiceException(UserError.REGISTER_USER_FAIL_EMAIL_ALREAY_EXISTS);
+            throw new ServiceException(UserError.REGISTER_USER_FAIL_EMAIL_ALREADY_EXISTS);
         }
 
         final String salt = UUID.randomUUID().toString().trim().replaceAll("-", "");
