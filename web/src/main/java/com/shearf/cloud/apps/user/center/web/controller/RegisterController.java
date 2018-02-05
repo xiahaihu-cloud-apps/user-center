@@ -41,7 +41,7 @@ public class RegisterController {
     public Response<String> doRegister(@RequestBody @Valid RegisterParam param, HttpServletRequest request) {
 
         String redirect = request.getParameter("redirect");
-        redirect = StringUtils.isNoneBlank(redirect) ? redirect : "login";
+        redirect = StringUtils.isNoneBlank(redirect) ? redirect : "/login";
         HttpSession session = request.getSession();
         String captcha = (String) session.getAttribute(SessionKey.CAPTCHA);
         if (captcha == null || !captcha.equals(param.getCaptcha())) {

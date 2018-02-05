@@ -2,6 +2,7 @@ package com.shearf.cloud.apps.user.center.web.config;
 
 import com.shearf.cloud.apps.user.center.service.UserService;
 import com.shearf.cloud.apps.user.center.web.advice.CustomAccessDeniedHandler;
+import com.shearf.cloud.apps.user.center.web.advice.UserAuthSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

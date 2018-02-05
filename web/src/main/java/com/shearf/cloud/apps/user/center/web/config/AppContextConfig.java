@@ -1,5 +1,8 @@
 package com.shearf.cloud.apps.user.center.web.config;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bingoohuang.patchca.color.SingleColorFactory;
 import com.github.bingoohuang.patchca.custom.ConfigurableCaptchaService;
 import com.github.bingoohuang.patchca.filter.predefined.CurvesRippleFilterFactory;
@@ -12,11 +15,16 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.awt.*;
 
@@ -61,11 +69,50 @@ public class AppContextConfig implements EnvironmentAware {
     }
 
     @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory)  {
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
+        ObjectMapper om = new ObjectMapper();
+        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        jackson2JsonRedisSerializer.setObjectMapper(om);
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(jackson2JsonRedisSerializer);
+        template.setValueSerializer(jackson2JsonRedisSerializer);
+        template.setHashKeySerializer(jackson2JsonRedisSerializer);
+        template.setHashValueSerializer(jackson2JsonRedisSerializer);
+        template.afterPropertiesSet();
+        return template;
+    }
+
+    @Bean
+    public JedisConnectionFactory jedisConnectionFactory(JedisPoolConfig jedisPoolConfig) {
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(jedisPoolConfig);
+        jedisConnectionFactory.setUsePool(true);
+        jedisConnectionFactory.setPort(16379);
+        jedisConnectionFactory.setHostName("139.224.232.232");
+        jedisConnectionFactory.setDatabase(1);
+        return jedisConnectionFactory;
+    }
+
+    @Bean
+    public JedisPoolConfig jedisPoolConfig() {
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxIdle(1);
+        jedisPoolConfig.setMaxTotal(5);
+        jedisPoolConfig.setBlockWhenExhausted(true);
+        jedisPoolConfig.setMaxWaitMillis(3000);
+        jedisPoolConfig.setTestOnBorrow(true);
+        return jedisPoolConfig;
+    }
+
+    @Bean
     public ConfigValue configValue() {
         ConfigValue configValue = new ConfigValue();
         configValue.setSimpleCaptchaApi(env.getProperty("app.simple.captcha.api"));
         configValue.setSimpleCaptchaAppKey(env.getProperty("app.simple.captcha.api.appKey"));
         configValue.setSimpleCaptchaAppSecret(env.getProperty("app.simple.captcha.api.appSecret"));
+        configValue.setSessionExpireTime(Integer.valueOf(env.getProperty("app.session.expiration")));
         return configValue;
     }
 

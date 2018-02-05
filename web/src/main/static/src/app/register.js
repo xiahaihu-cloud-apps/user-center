@@ -1,8 +1,9 @@
 import axios from '../axios'
-// import axios from 'axios'
 import Vue from 'vue'
 import APIS from '../base/apis'
 import CONSTANTS from '../base/constants'
+// import Messager from '../base/messager'
+import Messager from '../base/NotifyMessager'
 
 import VeeValidate from 'vee-validate'
 Vue.use(VeeValidate)
@@ -37,6 +38,7 @@ const registerForm = new Vue({
             const _this = this;
             axios.get(APIS.CAPTCHA).then(function(response) {
                 _this.$data.captchaImage = response.data;
+                _this.$data.form.captcha = "";
             })
         },
         submitForm: function(event) {
@@ -47,14 +49,27 @@ const registerForm = new Vue({
                         headers: {
                             "X-CSRF-TOKEN": _this.$data.csrf.token
                         }
-                    }).then(function(result) {
+                    }).then(function(response) {
+                        var result = response.data;
                         if (result.code == CONSTANTS.ResponseCode.SUCCESS) {
-
+                            Messager.success("注册成功", function() {
+                                window.location.href = result.data;
+                            });
+                        } else if (result.code == CONSTANTS.ResponseCode.INVALID_CSRF) {
+                            Messager.error("页面已经过期，请重新刷新页面", function() {
+                                window.location.reload();
+                                _this.reloadCaptchaImage();
+                                _this.getToken();
+                            });
                         } else {
-                            
+                            Messager.error(result.message);
+                            _this.reloadCaptchaImage();
+                            _this.getToken();
                         }
                     }).catch(function(error) {
                         console.debug(error);
+                        _this.reloadCaptchaImage();
+                        _this.getToken();
                     });
                 }
                 event.preventDefault();
