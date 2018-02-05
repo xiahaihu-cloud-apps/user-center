@@ -24,6 +24,9 @@ public class ConfigValue {
      */
     private String simpleCaptchaAppSecret;
 
+    /**
+     * session过期时间
+     */
     private int sessionExpireTime;
 
 }

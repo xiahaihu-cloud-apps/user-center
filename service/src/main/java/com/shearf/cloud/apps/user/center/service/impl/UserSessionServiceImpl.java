@@ -53,7 +53,7 @@ public class UserSessionServiceImpl extends AbstractGenericService<UserSessionMo
         UserSessionModel currentSessionModel = getByUserId(userDetailsBean.getUserModel().getId());
         UserSessionModel userSessionModel = new UserSessionModel();
         userSessionModel.setSessionId(ticket);
-        userSessionModel.setUserId(currentSessionModel.getUserId());
+        userSessionModel.setUserId(userDetailsBean.getUserModel().getId());
         userSessionModel.setLoginTime(new Date());
         userSessionModel.setExpiredTime(expireDateTime.toDate());
         if (currentSessionModel == null) {
@@ -65,5 +65,14 @@ public class UserSessionServiceImpl extends AbstractGenericService<UserSessionMo
             updateSelective(userSessionModel);
         }
         return ticket;
+    }
+
+    @Override
+    public String getSessionId(Integer userId) {
+        UserSessionModel sessionModel = getByUserId(userId);
+        if (sessionModel != null) {
+            return sessionModel.getSessionId();
+        }
+        return null;
     }
 }

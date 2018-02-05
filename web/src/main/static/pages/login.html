@@ -26,6 +26,7 @@
             <p class="login-box-msg">请登录</p>
 
             <form action="/login.html" method="post" id="loginForm">
+                <input type="hidden" name="redirect" value="${redirect}">
                 <input type="hidden" :name="csrfName" v-model="csrfToken">
                 <div class="form-group has-feedback" :class="{'has-error': errors.has('username')}">
                     <input v-validate="{required:true, email:true}" type="email" class="form-control" placeholder="Email" name="username">

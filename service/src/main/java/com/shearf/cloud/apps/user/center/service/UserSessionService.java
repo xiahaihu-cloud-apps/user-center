@@ -23,4 +23,12 @@ public interface UserSessionService extends IGenericService<UserSessionModel, In
      * @return
      */
     String saveUserSession(UserDetailsBean userDetailsBean);
+
+    /**
+     * 获得用户的sessionID
+     *
+     * @param userId
+     * @return
+     */
+    String getSessionId(Integer userId);
 }

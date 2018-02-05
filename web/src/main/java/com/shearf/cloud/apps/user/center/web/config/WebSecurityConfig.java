@@ -1,6 +1,7 @@
 package com.shearf.cloud.apps.user.center.web.config;
 
 import com.shearf.cloud.apps.user.center.service.UserService;
+import com.shearf.cloud.apps.user.center.service.UserSessionService;
 import com.shearf.cloud.apps.user.center.web.advice.CustomAccessDeniedHandler;
 import com.shearf.cloud.apps.user.center.web.advice.UserAuthSuccessHandler;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private UserSessionService userSessionService;
 
     @Bean
     public AuthenticationProvider authenticationProvider(SaltSource saltSource) {
@@ -77,7 +81,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login.html")
                     .passwordParameter("password").usernameParameter("username")
-                    .defaultSuccessUrl("/login/success")
+                    .successHandler(new UserAuthSuccessHandler(userSessionService))
+//                    .defaultSuccessUrl("/login/success")
                     .failureUrl("/login/fail")
                 .and().csrf().csrfTokenRepository(new HttpSessionCsrfTokenRepository())
                 .and().logout()
