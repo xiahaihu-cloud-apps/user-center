@@ -112,9 +112,15 @@ public class AppContextConfig implements EnvironmentAware {
     public JedisConnectionFactory jedisConnectionFactory(JedisPoolConfig jedisPoolConfig) {
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(jedisPoolConfig);
         jedisConnectionFactory.setUsePool(true);
-        jedisConnectionFactory.setPort(16379);
-        jedisConnectionFactory.setHostName("139.224.232.232");
-        jedisConnectionFactory.setDatabase(1);
+
+        String host = env.getProperty("redis.host");
+        int port = env.getProperty("redis.port", Integer.class);
+        int database = env.getProperty("redis.database", Integer.class);
+
+        jedisConnectionFactory.setPort(port);
+        jedisConnectionFactory.setHostName(host);
+        jedisConnectionFactory.setDatabase(database);
+
         return jedisConnectionFactory;
     }
 

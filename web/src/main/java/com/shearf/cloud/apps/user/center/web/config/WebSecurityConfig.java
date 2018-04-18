@@ -35,10 +35,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserSessionService userSessionService;
 
     @Bean
-    public AuthenticationProvider authenticationProvider(SaltSource saltSource) {
+    public AuthenticationProvider authenticationProvider(SaltSource saltSource, UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setSaltSource(saltSource);
         return authenticationProvider;
     }
